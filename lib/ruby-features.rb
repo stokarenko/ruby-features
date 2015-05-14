@@ -7,6 +7,10 @@ module RubyFeatures
   autoload :Concern,    'ruby-features/concern'
   autoload :Utils,      'ruby-features/utils'
 
+  module Generators
+    autoload :InstallGenerator, 'generators/ruby-features/install_generator'
+  end
+
   class << self
     def find(*folders)
       Container.new(folders)
