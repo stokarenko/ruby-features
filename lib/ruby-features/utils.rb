@@ -8,22 +8,20 @@ module RubyFeatures
       def prepare_module!(target, module_name)
         module_defined?(target, module_name) ?
           raise("Module already initiated: #{target.name}::#{module_name}") :
-          _prepare_module(target, module_name.split('::'))
+          prepare_module(target, module_name)
       end
 
-      def prepare_module(target, module_name)
-        module_defined?(target, module_name) ?
-          target.const_get(module_name) :
-          _prepare_module(target, module_name.split('::'))
-      end
+      def prepare_module(target, modules)
+        modules = modules.split('::') unless modules.kind_of?(Array)
 
-      private
+        first_submodule = modules.shift
+        new_target = module_defined?(target, first_submodule) ?
+          target.const_get(first_submodule) :
+          target.const_set(first_submodule, Module.new)
 
-      def _prepare_module(target, modules)
-        new_target = target.const_set(modules.shift, Module.new)
         modules.empty? ?
           new_target :
-          _prepare_module(new_target, modules)
+          prepare_module(new_target, modules)
       end
     end
   end
