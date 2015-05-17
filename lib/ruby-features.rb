@@ -27,14 +27,14 @@ module RubyFeatures
     def define(feature_name, &feature_body)
       feature = Single.new(feature_name, feature_body)
       feature_name = feature.name
-      raise "Such feature is already registered: #{feature_name}" if @@features.has_key?(feature_name)
+      raise NameError.new("Such feature is already registered: #{feature_name}") if @@features.has_key?(feature_name)
 
       @@features[feature_name] = feature
     end
 
     def apply(*feature_names)
       feature_names.each do |feature_name|
-        raise "Such feature is not registered: #{feature_name}" unless @@features.has_key?(feature_name)
+        raise NameError.new("Such feature is not registered: #{feature_name}") unless @@features.has_key?(feature_name)
 
         @@features[feature_name].apply
       end

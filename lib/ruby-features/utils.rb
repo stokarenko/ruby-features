@@ -7,7 +7,7 @@ module RubyFeatures
 
       def prepare_module!(target, module_name)
         module_defined?(target, module_name) ?
-          raise("Module already initiated: #{target.name}::#{module_name}") :
+          raise(NameError.new("Module already initiated: #{target.name}::#{module_name}")) :
           prepare_module(target, module_name)
       end
 
