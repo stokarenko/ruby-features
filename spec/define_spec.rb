@@ -38,4 +38,32 @@ describe RubyFeatures::Single do
     }.to raise_error(/Wrong feature name/)
   end
 
+  it 'should raise error if target already has feature class method' do
+    test_class.class_eval do
+      def self.existing_class_method; end
+    end
+
+    expect{
+      define_test_feature('existing_class_method') do
+        class_methods do
+          def existing_class_method; end
+        end
+      end.apply
+    }.to raise_error(/tried to define already existing class methods: \[:existing_class_method\]/)
+  end
+
+  it 'should raise error if target already has feature instance method' do
+    test_class.class_eval do
+      def existing_instance_method; end
+    end
+
+    expect{
+      define_test_feature('existing_instance_method') do
+        instance_methods do
+          def existing_instance_method; end
+        end
+      end.apply
+    }.to raise_error(/tried to define already existing instance methods: \[:existing_instance_method\]/)
+  end
+
 end
