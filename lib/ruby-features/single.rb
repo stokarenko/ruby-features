@@ -1,6 +1,10 @@
 module RubyFeatures
   class Single
 
+    attr_reader :name, :applied, :include_in_blocks
+    alias applied? applied
+
+
     def initialize(name, feature_body)
       @name = name.to_s
 
@@ -8,13 +12,11 @@ module RubyFeatures
       @applied = false
 
       instance_eval(&feature_body)
-
-      Container.push_to_current(self)
     end
 
     def apply
-      unless @applied
-        Mixins.build_and_apply!(@name, @include_in_blocks)
+      unless applied?
+        Mixins.build_and_apply!(self)
 
         @include_in_blocks = nil
         @applied = true
