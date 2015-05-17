@@ -1,9 +1,20 @@
 module RubyFeatures
   module Utils
+
+    autoload :ConstAccessor19, 'ruby-features/utils/const_accessor_19'
+    autoload :ConstAccessor20, 'ruby-features/utils/const_accessor_20'
+
+    begin
+      const_defined?('Some::Const')
+      extend ConstAccessor20
+    rescue NameError
+      extend ConstAccessor19
+    end
+
     class << self
 
       def module_defined?(target, module_name)
-        target.const_defined?(module_name) && target.const_get(module_name).name.start_with?(target.name)
+        ruby_const_defined?(target, module_name) && ruby_const_get(target, module_name).name.start_with?(target.name)
       end
 
       def prepare_module!(target, module_name)

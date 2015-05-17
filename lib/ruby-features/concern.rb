@@ -22,7 +22,7 @@ module RubyFeatures
     def _apply_to(target, feature_name)
       concern = self
 
-      const_get("::#{target}").class_eval do
+      RubyFeatures::Utils.ruby_const_get(concern, "::#{target}").class_eval do
         if RubyFeatures::Utils.module_defined?(concern, 'ClassMethods')
           common_methods = methods & concern::ClassMethods.instance_methods
           raise NameError.new("Feature #{feature_name} tried to define already existing class methods: #{common_methods.inspect}") unless common_methods.empty?
