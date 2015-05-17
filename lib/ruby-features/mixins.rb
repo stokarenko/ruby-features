@@ -4,7 +4,7 @@ module RubyFeatures
 
       def build_and_apply!(feature)
         RubyFeatures::Utils.prepare_module!(self, feature.name.classify).class_eval do
-          feature.include_in_blocks.each do |target, blocks|
+          feature.apply_to_blocks.each do |target, blocks|
             RubyFeatures::Utils.prepare_module!(self, target).class_eval do
               extend RubyFeatures::Concern
               blocks.each { |block| class_eval(&block) }

@@ -1,14 +1,14 @@
 module RubyFeatures
   class Single
 
-    attr_reader :name, :applied, :include_in_blocks
+    attr_reader :name, :applied, :apply_to_blocks
     alias applied? applied
 
 
     def initialize(name, feature_body)
       @name = name.to_s
 
-      @include_in_blocks = {}
+      @apply_to_blocks = {}
       @applied = false
 
       instance_eval(&feature_body)
@@ -18,18 +18,18 @@ module RubyFeatures
       unless applied?
         Mixins.build_and_apply!(self)
 
-        @include_in_blocks = nil
+        @apply_to_blocks = nil
         @applied = true
       end
     end
 
     private
 
-    def include_in(target, &block)
+    def apply_to(target, &block)
       target = target.to_s
 
-      @include_in_blocks[target] ||= []
-      @include_in_blocks[target] << block
+      @apply_to_blocks[target] ||= []
+      @apply_to_blocks[target] << block
     end
 
   end
