@@ -4,7 +4,6 @@ module RubyFeatures
     attr_reader :name, :applied, :apply_to_blocks
     alias applied? applied
 
-
     def initialize(name, feature_body)
       @name = name = name.to_s
       raise NameError.new("Wrong feature name: #{name}") unless name.match(/^[\/_a-z\d]+$/)
