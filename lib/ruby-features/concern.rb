@@ -4,11 +4,11 @@ module RubyFeatures
     private
 
     def self.extended(base)
-      base.instance_variable_set(:@_included_blocks, [])
+      base.instance_variable_set(:@_applied_blocks, [])
     end
 
-    def included(&block)
-      instance_variable_get(:@_included_blocks) << block
+    def applied(&block)
+      instance_variable_get(:@_applied_blocks) << block
     end
 
     def class_methods(&block)
@@ -26,8 +26,8 @@ module RubyFeatures
         extend concern::ClassMethods if RubyFeatures::Utils.module_defined?(concern, 'ClassMethods')
         include concern::InstanceMethods if RubyFeatures::Utils.module_defined?(concern, 'InstanceMethods')
 
-        concern.instance_variable_get(:@_included_blocks).each do |included_block|
-          class_eval(&included_block)
+        concern.instance_variable_get(:@_applied_blocks).each do |applied_block|
+          class_eval(&applied_block)
         end
       end
     end
