@@ -1,0 +1,53 @@
+GIT
+  remote: git://github.com/rails/rails.git
+  revision: b344986bc3d94ca7821fc5e0eef1874882ac6cbb
+  branch: 3-2-stable
+  specs:
+    activemodel (3.2.21)
+      activesupport (= 3.2.21)
+      builder (~> 3.0.0)
+    activerecord (3.2.21)
+      activemodel (= 3.2.21)
+      activesupport (= 3.2.21)
+      arel (~> 3.0.2)
+      tzinfo (~> 0.3.29)
+    activesupport (3.2.21)
+      i18n (~> 0.6, >= 0.6.4)
+      multi_json (~> 1.0)
+
+PATH
+  remote: ../
+  specs:
+    ruby-features (0.0.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    arel (3.0.3)
+    builder (3.0.4)
+    diff-lcs (1.2.5)
+    i18n (0.7.0)
+    multi_json (1.11.0)
+    rspec (3.2.0)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
+    rspec-core (3.2.3)
+      rspec-support (~> 3.2.0)
+    rspec-expectations (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-mocks (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-support (3.2.2)
+    tzinfo (0.3.44)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activerecord!
+  bundler
+  rspec
+  ruby-features!

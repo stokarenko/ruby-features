@@ -1,0 +1,9 @@
+source "http://rubygems.org"
+
+gem "activerecord", :github => "rails/rails", :branch => "4-2-stable"
+
+group :development, :test do
+  gem "rspec"
+end
+
+gemspec :path => "../"
