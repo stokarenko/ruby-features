@@ -12,7 +12,7 @@ module RubyFeatures
   end
 
   class << self
-    def find(*folders)
+    def find_in_path(*folders)
       Container.new(folders)
     end
 

@@ -1,1 +1,1 @@
-RubyFeatures.find(Rails.root.join('app/models/concerns')).apply
+RubyFeatures.find_in_path(Rails.root.join('app/models/concerns')).apply
