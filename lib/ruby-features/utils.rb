@@ -26,7 +26,7 @@ module RubyFeatures
       end
 
       def modulize(string)
-        string.gsub(/([a-z\d]*)/i) { $1.capitalize }.gsub(/[-_]/, '').gsub('/', '::')
+        string.gsub(/([a-z\d]+)/i) { $1.capitalize }.gsub(/[-_]/, '').gsub('/', '::')
       end
 
     end
