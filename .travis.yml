@@ -1,0 +1,16 @@
+language: ruby
+
+rvm:
+  - 1.9.3
+  - 2.0
+  - 2.2
+
+gemfile:
+  - gemfiles/clean.gemfile
+  - gemfiles/3.2.gemfile
+  - gemfiles/4.2.gemfile
+
+script: 'bundle exec rspec'
+
+notifications:
+  email: false
