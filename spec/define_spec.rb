@@ -32,4 +32,10 @@ describe RubyFeatures::Single do
     }.to change{test_class.new.respond_to?(:applied_block_accessor)}.from(false).to(true)
   end
 
+  it 'should check that feature name is correct' do
+    expect{
+      define_test_feature('wrong feature name')
+    }.to raise_error(/Wrong feature name/)
+  end
+
 end

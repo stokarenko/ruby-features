@@ -6,12 +6,13 @@ module RubyFeatures
 
 
     def initialize(name, feature_body)
-      @name = name.to_s
+      @name = name = name.to_s
+      raise NameError.new("Wrong feature name: #{name}") unless name.match(/^[\/_a-z\d]+$/)
 
       @apply_to_blocks = {}
       @applied = false
 
-      instance_eval(&feature_body)
+      instance_eval(&feature_body) if feature_body
     end
 
     def apply
