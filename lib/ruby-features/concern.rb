@@ -22,7 +22,7 @@ module RubyFeatures
     def _apply_to(target)
       concern = self
 
-      "::#{target}".constantize.class_eval do
+      const_get("::#{target}").class_eval do
         extend concern::ClassMethods if RubyFeatures::Utils.module_defined?(concern, 'ClassMethods')
         include concern::InstanceMethods if RubyFeatures::Utils.module_defined?(concern, 'InstanceMethods')
 
