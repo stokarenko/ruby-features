@@ -14,3 +14,7 @@ script: 'bundle exec rspec'
 
 notifications:
   email: false
+
+addons:
+  code_climate:
+    repo_token: def01fea93ef7e5af7b536817182cb7951f9aac0e151bf544584901a689ea8f3
