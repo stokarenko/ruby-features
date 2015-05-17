@@ -25,8 +25,12 @@ GEM
   specs:
     arel (3.0.3)
     builder (3.0.4)
+    codeclimate-test-reporter (0.4.7)
+      simplecov (>= 0.7.1, < 1.0.0)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     i18n (0.7.0)
+    json (1.8.2)
     multi_json (1.11.0)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
@@ -41,6 +45,11 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.2)
+    simplecov (0.10.0)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     tzinfo (0.3.44)
 
 PLATFORMS
@@ -49,5 +58,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord!
   bundler
+  codeclimate-test-reporter
   rspec
   ruby-features!
