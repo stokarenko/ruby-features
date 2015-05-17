@@ -6,6 +6,7 @@ module RubyFeatures
   autoload :Mixins,     'ruby-features/mixins'
   autoload :Concern,    'ruby-features/concern'
   autoload :Utils,      'ruby-features/utils'
+  autoload :Lazy,       'ruby-features/lazy'
 
   module Generators
     autoload :InstallGenerator, 'generators/ruby-features/install_generator'

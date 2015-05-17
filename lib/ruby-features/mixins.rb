@@ -8,10 +8,12 @@ module RubyFeatures
 
         RubyFeatures::Utils.prepare_module!(self, feature_module_name).class_eval do
           feature.apply_to_blocks.each do |target, blocks|
-            RubyFeatures::Utils.prepare_module!(self, target).class_eval do
-              extend RubyFeatures::Concern
-              blocks.each { |block| class_eval(&block) }
-              _apply_to(target, feature_name)
+            RubyFeatures::Lazy.apply(target) do
+              RubyFeatures::Utils.prepare_module!(self, target).class_eval do
+                extend RubyFeatures::Concern
+                blocks.each { |block| class_eval(&block) }
+                _apply_to(target, feature_name)
+              end
             end
           end
         end

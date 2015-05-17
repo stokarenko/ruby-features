@@ -16,10 +16,7 @@ RSpec.configure do
 
   def define_test_feature(feature_name_postfix, &block)
     test_class_name = test_class.name
-    feature_name = test_class_name.
-      gsub(/([A-Z][a-z\d]*)/){ "_#{$1.downcase}" }.
-      gsub(/^_/, '').
-      gsub('::', '/') + '/' + feature_name_postfix
+    feature_name = "#{RubyFeatures::Utils.underscore(test_class_name)}/#{feature_name_postfix}"
 
     RubyFeatures.define feature_name do
       apply_to test_class_name, &block
