@@ -1,32 +1,20 @@
 module RubyFeatures
   module Utils
     module ConstAccessor19
-      def ruby_const_defined?(target, const_parts)
-        const_parts = const_parts.split('::') unless const_parts.kind_of?(Array)
-
-        first_const_part = const_parts.shift
-        first_const_defined = target.const_defined?(first_const_part)
-
-        !first_const_defined || const_parts.empty? ?
-          first_const_defined :
-          ruby_const_defined?(target.const_get(first_const_part), const_parts)
+      def ruby_const_defined?(target, const_name)
+        !!inject_const_parts_with_target(target, const_name){ |parent, submodule|
+          parent && parent.const_defined?(submodule) ?
+            parent.const_get(submodule) :
+            false
+        }
       end
 
-      def ruby_const_get(target, const_parts)
-        const_parts = const_parts.split('::') unless const_parts.kind_of?(Array)
-
-        first_const_part = const_parts.shift
-        if first_const_part == ''
-          target = ::Object
-          first_const_part = const_parts.shift
+      def ruby_const_get(target, const_name)
+        inject_const_parts_with_target(target, const_name) do |parent, submodule|
+          parent.const_get(submodule)
         end
-
-        first_const = target.const_get(first_const_part)
-
-        const_parts.empty? ?
-          first_const :
-          ruby_const_get(first_const, const_parts)
       end
+
     end
   end
 end

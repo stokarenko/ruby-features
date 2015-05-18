@@ -30,17 +30,24 @@ module RubyFeatures
           prepare_module(target, module_name)
       end
 
-      def prepare_module(target, modules)
-        modules = modules.split('::') unless modules.kind_of?(Array)
+      def prepare_module(target, module_name)
+        inject_const_parts_with_target(target, module_name) do |parent, submodule|
+          module_defined?(parent, submodule) ?
+            parent.const_get(submodule) :
+            parent.const_set(submodule, Module.new)
+        end
+      end
 
-        first_submodule = modules.shift
-        new_target = module_defined?(target, first_submodule) ?
-          target.const_get(first_submodule) :
-          target.const_set(first_submodule, Module.new)
+      private
 
-        modules.empty? ?
-          new_target :
-          prepare_module(new_target, modules)
+      def inject_const_parts_with_target(target, const_name, &block)
+        const_parts = const_name.split('::')
+        if const_parts.first == ''
+          target = ::Object
+          const_parts.shift
+        end
+
+        const_parts.inject(target, &block)
       end
 
     end
