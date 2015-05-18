@@ -1,8 +1,11 @@
 module RubyFeatures
   module Utils
 
-    autoload :ConstAccessor19, 'ruby-features/utils/const_accessor_19'
-    autoload :ConstAccessor20, 'ruby-features/utils/const_accessor_20'
+    autoload :ConstAccessor19,        'ruby-features/utils/const_accessor_19'
+    autoload :ConstAccessor20,        'ruby-features/utils/const_accessor_20'
+
+    autoload :Inflector,              'ruby-features/utils/inflector'
+    autoload :InflectorActiveSupport, 'ruby-features/utils/inflector_active_support'
 
     begin
       const_defined?('Some::Const')
@@ -10,6 +13,10 @@ module RubyFeatures
     rescue NameError
       extend ConstAccessor19
     end
+
+    extend RubyFeatures.active_support_available? ?
+      InflectorActiveSupport :
+      Inflector
 
     class << self
 
@@ -34,16 +41,6 @@ module RubyFeatures
         modules.empty? ?
           new_target :
           prepare_module(new_target, modules)
-      end
-
-      def modulize(string)
-        string.gsub(/([a-z\d]+)/i) { $1.capitalize }.gsub(/[-_]/, '').gsub('/', '::')
-      end
-
-      def underscore(string)
-        string.gsub(/([A-Z][a-z\d]*)/){ "_#{$1.downcase}" }.
-        gsub(/^_/, '').
-        gsub('::', '/')
       end
 
     end

@@ -5,7 +5,7 @@ module RubyFeatures
       def build_and_apply!(feature)
         feature_module = RubyFeatures::Utils.prepare_module!(
           self,
-          RubyFeatures::Utils.modulize(feature.name)
+          RubyFeatures::Utils.camelize(feature.name)
         )
 
         feature.apply_to_blocks.each do |target, blocks|

@@ -7,20 +7,9 @@ module RubyFeatures
       i18n
     ).map(&:to_sym).freeze
 
-    @active_support_available = begin
-      require 'active_support'
-      true
-    rescue LoadError
-      false
-    end
-
     class << self
-      def active_support_available?
-        @active_support_available
-      end
-
       def apply(target, &block)
-        if active_support_available?
+        if RubyFeatures.active_support_available?
           target_namespace = RubyFeatures::Utils.underscore(target.split('::').first).to_sym
 
           if ACTIVE_SUPPORT_LAZY_TARGETS.include?(target_namespace)
