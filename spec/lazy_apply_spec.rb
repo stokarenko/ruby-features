@@ -1,4 +1,4 @@
-if RubyFeatures::Lazy.active_support_available?
+if RubyFeatures.active_support_available?
   describe RubyFeatures::Lazy do
 
     it 'should use ActiveSupport lazy load' do
