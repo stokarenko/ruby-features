@@ -36,7 +36,7 @@ module RubyFeatures
           prepare_module(new_target, modules)
       end
 
-      def modulize(string)
+      def camelize(string)
         string.gsub(/([a-z\d]+)/i) { $1.capitalize }.gsub(/[-_]/, '').gsub('/', '::')
       end
 
