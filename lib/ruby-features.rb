@@ -2,18 +2,20 @@ require 'ruby-features/version'
 
 module RubyFeatures
   autoload :Container,  'ruby-features/container'
-  autoload :Single,     'ruby-features/single'
   autoload :Mixins,     'ruby-features/mixins'
   autoload :Utils,      'ruby-features/utils'
   autoload :Lazy,       'ruby-features/lazy'
 
   module Concern
     autoload :ApplyTo,    'ruby-features/concern/apply_to'
+    autoload :Feature,    'ruby-features/concern/feature'
   end
 
   module Generators
     autoload :InstallGenerator, 'generators/ruby-features/install_generator'
   end
+
+  class ApplyError < StandardError; end
 
   @features = {}
 
@@ -36,11 +38,11 @@ module RubyFeatures
     end
 
     def define(feature_name, &feature_body)
-      feature = Single.new(feature_name, feature_body)
-      feature_name = feature.name
+      feature_name = feature_name.to_s
+      raise NameError.new("Wrong feature name: #{name}") unless feature_name.match(/^[\/_a-z\d]+$/)
       raise NameError.new("Such feature is already registered: #{feature_name}") if @features.has_key?(feature_name)
 
-      @features[feature_name] = feature
+      @features[feature_name] = Mixins.new(feature_name, feature_body)
     end
 
     def apply(*feature_names)

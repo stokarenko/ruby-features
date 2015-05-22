@@ -1,4 +1,4 @@
-describe RubyFeatures::Single do
+describe RubyFeatures::Concern::Feature do
 
   prepare_test_class 'DefineTestModule::DefineTestClass'
 
@@ -49,7 +49,7 @@ describe RubyFeatures::Single do
           def existing_class_method; end
         end
       end.apply
-    }.to raise_error(/tried to define already existing class methods: \[:existing_class_method\]/)
+    }.to raise_error(/Tried to define already existing class methods: \[:existing_class_method\]/)
   end
 
   it 'should raise error if target already has feature instance method' do
@@ -63,7 +63,7 @@ describe RubyFeatures::Single do
           def existing_instance_method; end
         end
       end.apply
-    }.to raise_error(/tried to define already existing instance methods: \[:existing_instance_method\]/)
+    }.to raise_error(/Tried to define already existing instance methods: \[:existing_instance_method\]/)
   end
 
 end
