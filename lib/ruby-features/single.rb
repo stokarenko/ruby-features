@@ -28,8 +28,7 @@ module RubyFeatures
     def apply_to(target, &block)
       target = target.to_s
 
-      @apply_to_blocks[target] ||= []
-      @apply_to_blocks[target] << block
+      (@apply_to_blocks[target] ||= []) << block
     end
 
   end
