@@ -17,7 +17,7 @@ module RubyFeatures
       end
 
       def applied(&block)
-        instance_variable_get(:@_applied_blocks) << block
+        @_applied_blocks << block
       end
 
       def class_methods(&block)
@@ -42,7 +42,7 @@ module RubyFeatures
       end
 
       def _apply_applied_blocks(target_class)
-        instance_variable_get(:@_applied_blocks).each do |applied_block|
+        @_applied_blocks.each do |applied_block|
           target_class.class_eval(&applied_block)
         end
       end
