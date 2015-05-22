@@ -17,7 +17,7 @@ module RubyFeatures
 
       def _lazy_build_and_apply!(feature, feature_module, target, blocks)
         lazy_module = RubyFeatures::Utils.prepare_module!(feature_module, target)
-        lazy_module.extend RubyFeatures::Concern
+        lazy_module.extend RubyFeatures::Concern::ApplyTo
         blocks.each { |block| lazy_module.class_eval(&block) }
         lazy_module._apply(target, feature.name)
       end

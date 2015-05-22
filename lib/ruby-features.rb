@@ -4,9 +4,12 @@ module RubyFeatures
   autoload :Container,  'ruby-features/container'
   autoload :Single,     'ruby-features/single'
   autoload :Mixins,     'ruby-features/mixins'
-  autoload :Concern,    'ruby-features/concern'
   autoload :Utils,      'ruby-features/utils'
   autoload :Lazy,       'ruby-features/lazy'
+
+  module Concern
+    autoload :ApplyTo,    'ruby-features/concern/apply_to'
+  end
 
   module Generators
     autoload :InstallGenerator, 'generators/ruby-features/install_generator'
