@@ -1,6 +1,7 @@
 require 'ruby-features/version'
 
 module RubyFeatures
+  autoload :Conditions, 'ruby-features/conditions'
   autoload :Container,  'ruby-features/container'
   autoload :Mixins,     'ruby-features/mixins'
   autoload :Utils,      'ruby-features/utils'

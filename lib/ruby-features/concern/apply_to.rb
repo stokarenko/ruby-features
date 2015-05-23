@@ -2,7 +2,14 @@ module RubyFeatures
   module Concern
     module ApplyTo
 
-      def _apply(target)
+      def _apply(target, apply_to_definitions, conditions)
+        apply_to_definitions.each do |apply_to_definition|
+          if @_global_constant_postfix = conditions.build_constant_postfix(apply_to_definition[:asserts])
+            class_eval(&apply_to_definition[:block])
+            @_global_constant_postfix = nil
+          end
+        end
+
         target_class = RubyFeatures::Utils.ruby_const_get(self, "::#{target}")
 
         _apply_methods(target_class, :class)

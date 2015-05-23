@@ -1,6 +1,6 @@
 describe RubyFeatures do
 
-  subject { class ConditionsTestClass; end }
+  class ConditionsTestClass; end
 
   RubyFeatures.define 'conditions_test_class/conditions' do
     condition(:boolean) { true }
@@ -17,7 +17,9 @@ describe RubyFeatures do
       end
     end
 
-  end
+  end.apply
+
+  subject { ConditionsTestClass }
 
   it 'should respect conditions when appling to target' do
     expect(subject).to respond_to(:boolean_true)
@@ -26,25 +28,11 @@ describe RubyFeatures do
 
   it 'should raise error if such condition is aready defined' do
     expect{
-      RubyFeatures.define 'conditions_test_class/conditions' do
+      RubyFeatures.define 'conditions_test_class/duplicate_conditions' do
         condition(:duplicate_condition){ :duplicate_condition }
         condition('duplicate_condition'){ 'duplicate_condition' }
       end
-    }.to raise_error(/Such condition is already registered/)
+    }.to raise_error(/Such condition is already defined/)
   end
-  #
-  # it 'should raise error if trying to apply not existing feature' do
-  #   expect{
-  #     RubyFeatures.apply('find_and_apply_test_class/not_existing_feature')
-  #   }.to raise_error(/Such feature is not registered/)
-  # end
-  #
-  # it 'should raise error if trying to define already registered feature' do
-  #   RubyFeatures.define('find_and_apply_test_class/duplicate_feature')
-  #
-  #   expect{
-  #     RubyFeatures.define('find_and_apply_test_class/duplicate_feature')
-  #   }.to raise_error(/Such feature is already registered/)
-  # end
 
 end
