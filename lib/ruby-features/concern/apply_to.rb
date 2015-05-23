@@ -3,18 +3,9 @@ module RubyFeatures
     module ApplyTo
 
       def _apply(target, apply_to_definitions, conditions)
-        @_conditions = conditions
-
-        apply_to_definitions.each do |apply_to_definition|
-          global_asserts = @_conditions.normalize_asserts(apply_to_definition[:asserts])
-          if @_conditions.match?(global_asserts)
-            @_global_asserts = global_asserts
-            class_eval(&apply_to_definition[:block])
-            @_global_asserts = nil
-          end
+        _with_instance_variable(:@_conditions, conditions) do
+          _build_mixins(apply_to_definitions)
         end
-
-        @_conditions = nil
 
         target_class = RubyFeatures::Utils.ruby_const_get(self, "::#{target}")
 
@@ -44,13 +35,18 @@ module RubyFeatures
 
       def _apply_methods(target_class)
         constants.each do |constant|
-          mixin_type = constant.to_s.match(/^((?:Extend)|(?:Include))/)[1].downcase.to_sym
+          mixin_method, existing_methods_method = case(constant)
+          when /^Extend/ then [:extend, :methods]
+          when /^Include/ then [:include, :instance_methods]
+          else raise ArgumentError.new("Wrong mixin constant: #{constant}")
+          end
+
           mixin = const_get(constant)
 
-          common_methods = target_class.public_send(:"#{'instance_' if mixin_type == :include}methods") & mixin.instance_methods
-          raise NameError.new("Tried to #{mixin_type} already existing methods: #{common_methods.inspect}") unless common_methods.empty?
+          common_methods = target_class.public_send(existing_methods_method) & mixin.instance_methods
+          raise NameError.new("Tried to #{mixin_method} already existing methods: #{common_methods.inspect}") unless common_methods.empty?
 
-          target_class.send(mixin_type, mixin)
+          target_class.send(mixin_method, mixin)
         end
       end
 
@@ -65,6 +61,23 @@ module RubyFeatures
 
         if @_conditions.match?(asserts)
           RubyFeatures::Utils.prepare_module(self, "#{mixin_prefix}#{@_conditions.build_constant_postfix(@_global_asserts, asserts)}").class_eval(&block)
+        end
+      end
+
+      def _with_instance_variable(variable_name, value)
+        instance_variable_set(variable_name, value)
+        yield
+        remove_instance_variable(variable_name)
+      end
+
+      def _build_mixins(apply_to_definitions)
+        apply_to_definitions.each do |apply_to_definition|
+          global_asserts = @_conditions.normalize_asserts(apply_to_definition[:asserts])
+          if @_conditions.match?(global_asserts)
+            _with_instance_variable(:@_global_asserts, global_asserts) do
+              class_eval(&apply_to_definition[:block])
+            end
+          end
         end
       end
 
