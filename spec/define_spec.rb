@@ -13,7 +13,7 @@ describe RubyFeatures::Concern::Feature do
 
 
     expect(test_class.singleton_class.included_modules).to include(
-      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::ClassMethodsFeature::DefineTestModule::DefineTestClass::ClassMethods
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::ClassMethodsFeature::DefineTestModule::DefineTestClass::Extend
     )
   end
 
@@ -27,7 +27,7 @@ describe RubyFeatures::Concern::Feature do
     }.to change{test_class.new.respond_to?(:test_instance_method)}.from(false).to(true)
 
     expect(test_class.included_modules).to include(
-      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::InstanceMethodsFeature::DefineTestModule::DefineTestClass::InstanceMethods
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::InstanceMethodsFeature::DefineTestModule::DefineTestClass::Include
     )
   end
 
@@ -58,7 +58,7 @@ describe RubyFeatures::Concern::Feature do
           def existing_class_method; end
         end
       end.apply
-    }.to raise_error(/Tried to define already existing class methods: \[:existing_class_method\]/)
+    }.to raise_error(/Tried to extend already existing methods: \[:existing_class_method\]/)
   end
 
   it 'should raise error if target already has feature instance method' do
@@ -72,7 +72,7 @@ describe RubyFeatures::Concern::Feature do
           def existing_instance_method; end
         end
       end.apply
-    }.to raise_error(/Tried to define already existing instance methods: \[:existing_instance_method\]/)
+    }.to raise_error(/Tried to include already existing methods: \[:existing_instance_method\]/)
   end
 
 end

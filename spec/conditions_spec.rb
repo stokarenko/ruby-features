@@ -2,7 +2,7 @@ describe RubyFeatures do
 
   class ConditionsTestClass; end
 
-  RubyFeatures.define 'conditions_test_class/conditions' do
+  RubyFeatures.define 'conditions_test_feature' do
     condition(:boolean) { true }
 
     apply_to 'ConditionsTestClass', if: :boolean do
@@ -24,6 +24,10 @@ describe RubyFeatures do
   it 'should respect conditions when appling to target' do
     expect(subject).to respond_to(:boolean_true)
     expect(subject).to_not respond_to(:boolean_false)
+
+    expect(subject.singleton_class.included_modules).to include(
+      RubyFeatures::Mixins::ConditionsTestFeature::ConditionsTestClass::ExtendIfBooleanIsTrue
+    )
   end
 
   it 'should raise error if such condition is aready defined' do
