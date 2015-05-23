@@ -4,22 +4,31 @@ describe RubyFeatures::Concern::Feature do
 
   it 'should apply class methods' do
     expect{
-      define_test_feature('class_methods') do
+      define_test_feature('class_methods_feature') do
         class_methods do
           def test_class_method; end
         end
       end.apply
     }.to change{test_class.respond_to?(:test_class_method)}.from(false).to(true)
+
+
+    expect(test_class.singleton_class.included_modules).to include(
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::ClassMethodsFeature::DefineTestModule::DefineTestClass::ClassMethods
+    )
   end
 
   it 'should apply instance methods' do
     expect{
-      define_test_feature('instance_methods') do
+      define_test_feature('instance_methods_feature') do
         instance_methods do
           def test_instance_method; end
         end
       end.apply
     }.to change{test_class.new.respond_to?(:test_instance_method)}.from(false).to(true)
+
+    expect(test_class.included_modules).to include(
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::InstanceMethodsFeature::DefineTestModule::DefineTestClass::InstanceMethods
+    )
   end
 
   it 'should process applied block' do
