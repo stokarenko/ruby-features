@@ -1,25 +1,34 @@
-describe RubyFeatures::Single do
+describe RubyFeatures::Concern::Feature do
 
   prepare_test_class 'DefineTestModule::DefineTestClass'
 
   it 'should apply class methods' do
     expect{
-      define_test_feature('class_methods') do
+      define_test_feature('class_methods_feature') do
         class_methods do
           def test_class_method; end
         end
       end.apply
     }.to change{test_class.respond_to?(:test_class_method)}.from(false).to(true)
+
+
+    expect(test_class.singleton_class.included_modules).to include(
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::ClassMethodsFeature::DefineTestModule::DefineTestClass::Extend
+    )
   end
 
   it 'should apply instance methods' do
     expect{
-      define_test_feature('instance_methods') do
+      define_test_feature('instance_methods_feature') do
         instance_methods do
           def test_instance_method; end
         end
       end.apply
     }.to change{test_class.new.respond_to?(:test_instance_method)}.from(false).to(true)
+
+    expect(test_class.included_modules).to include(
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::InstanceMethodsFeature::DefineTestModule::DefineTestClass::Include
+    )
   end
 
   it 'should process applied block' do
@@ -49,7 +58,7 @@ describe RubyFeatures::Single do
           def existing_class_method; end
         end
       end.apply
-    }.to raise_error(/tried to define already existing class methods: \[:existing_class_method\]/)
+    }.to raise_error(/Tried to extend already existing methods: \[:existing_class_method\]/)
   end
 
   it 'should raise error if target already has feature instance method' do
@@ -63,7 +72,7 @@ describe RubyFeatures::Single do
           def existing_instance_method; end
         end
       end.apply
-    }.to raise_error(/tried to define already existing instance methods: \[:existing_instance_method\]/)
+    }.to raise_error(/Tried to include already existing methods: \[:existing_instance_method\]/)
   end
 
 end

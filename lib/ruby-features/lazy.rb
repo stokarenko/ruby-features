@@ -13,9 +13,7 @@ module RubyFeatures
           target_namespace = RubyFeatures::Utils.underscore(target.split('::').first).to_sym
 
           if ACTIVE_SUPPORT_LAZY_TARGETS.include?(target_namespace)
-            ActiveSupport.on_load target_namespace, yield: true, &block
-
-            return
+            return ActiveSupport.on_load target_namespace, yield: true, &block
           end
         end
 

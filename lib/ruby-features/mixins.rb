@@ -2,24 +2,15 @@ module RubyFeatures
   module Mixins
     class << self
 
-      def build_and_apply!(feature)
-        feature_module = RubyFeatures::Utils.prepare_module!(
+      def new(feature_name, feature_body)
+        RubyFeatures::Utils.prepare_module!(
           self,
-          RubyFeatures::Utils.camelize(feature.name)
-        )
-
-        feature.apply_to_blocks.each do |target, blocks|
-          RubyFeatures::Lazy.apply(target) do
-            _lazy_build_and_apply!(feature, feature_module, target, blocks)
-          end
+          RubyFeatures::Utils.camelize(feature_name)
+        ).tap do |feature_module|
+          feature_module.extend RubyFeatures::Concern::Feature
+          feature_module._set_name(feature_name)
+          feature_module.class_eval(&feature_body) if feature_body
         end
-      end
-
-      def _lazy_build_and_apply!(feature, feature_module, target, blocks)
-        lazy_module = RubyFeatures::Utils.prepare_module!(feature_module, target)
-        lazy_module.extend RubyFeatures::Concern
-        blocks.each { |block| lazy_module.class_eval(&block) }
-        lazy_module._apply(target, feature.name)
       end
 
     end
