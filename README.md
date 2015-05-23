@@ -100,6 +100,102 @@ RubyFeatures.define 'some_namespace/something_useful' do
 end
 ```
 
+### Conditions
+Sometimes is required to apply different things, dependent on some criteria:
+```ruby
+RubyFeatures.define 'some_namespace/something_useful' do
+  apply_to 'ActiveRecord::Base' do
+
+    class_methods do
+      if ActiveRecord::VERSION::MAJOR > 3
+        def useful_method
+          # Implementation for newest ActiveRecord
+        end
+      else
+        def useful_method
+          # Implementation for ActiveRecord 3
+        end
+      end
+    end
+  end
+end
+```
+
+It's bad to do like that, because the mixin applied by Ruby Features became to be not static.
+That cause not predictable behavior.
+
+Ruby Features provides the `conditions` mechanism to avoid such problem:
+```ruby
+RubyFeatures.define 'some_namespace/something_useful' do
+  condition(:newest_activerecord){ ActiveRecord::VERSION::MAJOR > 3 }
+
+  apply_to 'ActiveRecord::Base' do
+
+    class_methods if: :newest_activerecord do
+      def useful_method
+        # Implementation for newest ActiveRecord
+      end
+    end
+
+    class_methods unless: :newest_activerecord do
+      def useful_method
+        # Implementation for ActiveRecord 3
+      end
+    end
+
+  end
+end
+```
+
+All feature definition helpers supports the conditions:
+```ruby
+apply_to 'ActiveRecord::Base', if: :first_criteria do; end
+
+applied if: :second_criteria do; end
+
+class_methods if: :third_criteria do; end
+
+instance_methods if: :fourth_criteria do; end
+```
+
+It's possible to define not boolean condition:
+```ruby
+RubyFeatures.define 'some_namespace/something_useful' do
+  condition(:activerecord_version){ ActiveRecord::VERSION::MAJOR }
+
+  apply_to 'ActiveRecord::Base' do
+
+    class_methods unless: {activerecord_version: 3} do
+      def useful_method
+        # Implementation for newest ActiveRecord
+      end
+    end
+
+    class_methods if: {activerecord_version: 3} do
+      def useful_method
+        # Implementation for ActiveRecord 3
+      end
+    end
+
+  end
+end
+```
+
+It's possible to combine the conditions:
+```ruby
+class_methods {
+  if: [
+    :boolean_condition,
+    :other_boolean_condition,
+    {
+      string_condition: 'some_string',
+      symbol_condition: :some_symbol
+    }
+  ],
+  unless: :unless_boolean_condition
+} do; end
+```
+
 ### Feature loading
 Feature can be loaded by normal `require` call:
 ```ruby
@@ -131,6 +227,10 @@ require `lib/features/something_useful_feature`
 
 RubyFeatures.apply 'some_namespace/something_useful'
 ```
+
+## Changes
+### v1.1.0
+* Added conditions mechanism.
 
 ## License
 MIT License. Copyright (c) 2015 Sergey Tokarenko
