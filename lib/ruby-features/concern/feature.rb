@@ -4,6 +4,8 @@ module RubyFeatures
 
       def apply
         unless applied?
+          RubyFeatures.apply(*@_dependencies)
+
           @_apply_to_definitions.keys.each do |target|
             RubyFeatures::Lazy.apply(target) do
               _lazy_apply(target)
@@ -29,10 +31,16 @@ module RubyFeatures
       private
 
       def self.extended(base)
+        base.instance_variable_set(:@_dependencies, [])
         base.instance_variable_set(:@_conditions, RubyFeatures::Conditions.new)
         base.instance_variable_set(:@_apply_to_definitions, {})
         base.instance_variable_set(:@_applied, false)
       end
+
+      def dependencies(*feature_names)
+        @_dependencies.push(*feature_names).uniq!
+      end
+      alias dependency dependencies
 
       def condition(condition_name, &block)
         @_conditions.push(condition_name, block)
