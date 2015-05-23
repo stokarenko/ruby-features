@@ -100,6 +100,15 @@ RubyFeatures.define 'some_namespace/something_useful' do
 end
 ```
 
+### Dependencies
+The dependencies from other Ruby Features can be defined like:
+```ruby
+RubyFeatures.define 'main_feature' do
+  dependency 'dependent_feature1'
+  dependencies 'dependent_feature2', 'dependent_feature3'
+end
+```
+
 ### Conditions
 Sometimes is required to apply different things, dependent on some criteria:
 ```ruby
@@ -230,7 +239,8 @@ RubyFeatures.apply 'some_namespace/something_useful'
 
 ## Changes
 ### v1.1.0
-* Added conditions mechanism.
+* Added conditions.
+* Added dependencies.
 
 ## License
 MIT License. Copyright (c) 2015 Sergey Tokarenko
