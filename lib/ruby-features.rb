@@ -40,7 +40,7 @@ module RubyFeatures
 
     def define(feature_name, &feature_body)
       feature_name = feature_name.to_s
-      raise NameError.new("Wrong feature name: #{name}") unless feature_name.match(/^[\/_a-z\d]+$/)
+      raise NameError.new("Wrong feature name: #{feature_name}") unless feature_name.match(/^[\/_a-z\d]+$/)
       raise NameError.new("Such feature is already registered: #{feature_name}") if @features.has_key?(feature_name)
 
       @features[feature_name] = Mixins.new(feature_name, feature_body)
