@@ -20,12 +20,12 @@ module RubyFeatures
         @_applied
       end
 
-      def _set_name(name)
-        @_name = name
+      def _set_feature_name(name)
+        @_feature_name = name
       end
 
-      def name
-        @_name
+      def feature_name
+        @_feature_name
       end
 
       private
@@ -57,7 +57,7 @@ module RubyFeatures
         apply_to_module.extend RubyFeatures::Concern::ApplyTo
         apply_to_module._apply(target, @_apply_to_definitions.delete(target), @_conditions)
       rescue NameError => e
-        raise ApplyError.new("[#{name}] #{e.message}")
+        raise ApplyError.new("[#{feature_name}] #{e.message}")
       end
 
     end
