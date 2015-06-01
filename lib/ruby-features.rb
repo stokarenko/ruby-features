@@ -13,7 +13,7 @@ module RubyFeatures
   end
 
   module Generators
-    autoload :InstallGenerator, 'generators/ruby-features/install_generator'
+    autoload :InstallGenerator, 'generators/ruby_features/install_generator'
   end
 
   class ApplyError < StandardError; end
