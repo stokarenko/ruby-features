@@ -5,7 +5,7 @@ Ruby Features
 [![Climate](https://codeclimate.com/github/stokarenko/ruby-features/badges/gpa.svg)](https://codeclimate.com/github/stokarenko/ruby-features)
 [![Coverage](https://codeclimate.com/github/stokarenko/ruby-features/badges/coverage.svg)](https://codeclimate.com/github/stokarenko/ruby-features/coverage)
 
-Ruby Features makes the extending of Ruby classes and modules to be easy, safe and controlled.
+Ruby Features allow the extending of Ruby classes and modules to become easy, safe and controlled.
 
 ## Why?
 Lets ask, is that good to write the code like this:
