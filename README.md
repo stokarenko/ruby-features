@@ -8,7 +8,7 @@ Ruby Features
 Ruby Features makes the extending of Ruby classes and modules to be easy, safe and controlled.
 
 ## Why?
-Lets ask, is good to write the code like this:
+Lets ask, is that good to write the code like this:
 ```ruby
 String.send :include, MyStringExtension
 ```
@@ -22,7 +22,7 @@ Object.class_eval do
 end
 ```
 
-The question is about motivation to write such things. Lets skip well-known reason like
+The matter is in motivation to write such things. Lets skip the well-known reasons like
 > Because I can! That is Ruby baby, lets make some anarchy!
 
 but say:
@@ -37,12 +37,12 @@ library, infected by massive patches to core entities.
 Ruby Features goal is to take that under control.
 
 The main features are:
-* No any dependencies;
+* No dependencies;
 * Built-in lazy load;
 * Supports ActiveSupport lazy load as well;
 * Stimulates the clear extending, but prevents monkey patching;
 * Gives the control what core extensions to apply;
-* Any moment gives the knowledge who and how exactly affected to programming entities.
+* Gives the understading who and how exactly affected to programming entities.
 
 ## requirements
 * Ruby >= 1.9.3
@@ -68,7 +68,7 @@ to apply third-party features.
 
 ## Usage
 ### Feature definition
-Feature file name should ends with `_feature.rb`.
+Feature file name should end with `_feature.rb`.
 
 Lets define the feature in `lib/features/something_useful_feature.rb`:
 ```ruby
@@ -101,7 +101,7 @@ end
 ```
 
 ### Dependencies
-The dependencies from other Ruby Features can be defined like:
+The dependencies on other Ruby Features can be defined like:
 ```ruby
 RubyFeatures.define 'main_feature' do
   dependency 'dependent_feature1'
@@ -110,7 +110,7 @@ end
 ```
 
 ### Conditions
-Sometimes is required to apply different things, dependent on some criteria:
+Sometimes it`s required to apply different things, depending on some criteria:
 ```ruby
 RubyFeatures.define 'some_namespace/something_useful' do
   apply_to 'ActiveRecord::Base' do
@@ -131,7 +131,7 @@ end
 ```
 
 It's bad to do like that, because the mixin applied by Ruby Features became to be not static.
-That cause not predictable behavior.
+That causes unpredictable behavior.
 
 Ruby Features provides the `conditions` mechanism to avoid such problem:
 ```ruby
@@ -156,7 +156,7 @@ RubyFeatures.define 'some_namespace/something_useful' do
 end
 ```
 
-All feature definition helpers supports the conditions:
+All DSL methods support the conditions:
 ```ruby
 apply_to 'ActiveRecord::Base', if: :first_criteria do; end
 
@@ -218,14 +218,14 @@ RubyFeatures.find_in_path(File.expand_path('../lib/features', __FILE__))
 ```
 
 ### Feature applying
-Feature can be applied immediately after it's definition:
+Feature can be applied immediately after its definition:
 ```ruby
 RubyFeatures.define 'some_namespace/something_useful' do
   # definition
 end.apply
 ```
 
-Features can be applied right after loading from path:
+Features can be applied immediately after loading from path:
 ```ruby
 RubyFeatures.find_in_path(File.expand_path('../lib/features', __FILE__)).apply_all
 ```
