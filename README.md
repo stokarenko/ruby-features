@@ -45,7 +45,9 @@ The main features are:
 * Gives the understading who and how exactly affected to programming entities.
 
 ## requirements
-* Ruby >= 1.9.3
+* Ruby >= 2.0
+
+For older ruby versions - please use gem version `1.1.2`.
 
 ## Getting started
 
