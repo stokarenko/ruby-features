@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-features (1.1.2)
+    ruby-features (1.2.0)
 
 GEM
   remote: http://rubygems.org/
@@ -38,3 +38,6 @@ DEPENDENCIES
   codeclimate-test-reporter
   rspec
   ruby-features!
+
+BUNDLED WITH
+   1.12.5
