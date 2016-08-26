@@ -49,17 +49,17 @@ module RubyFeatures
           when /^AddClassMethods/
             existing_methods = mixin_methods & target_class_methods
             raise NameError.new("Tried to add already existing class methods: #{existing_methods.inspect}") unless existing_methods.empty?
-            target_class.extend mixin
+            target_class.send(:extend, mixin)
 
           when /^AddInstanceMethods/
             existing_methods = mixin_methods & target_instance_methods
             raise NameError.new("Tried to add already existing instance methods: #{existing_methods.inspect}") unless existing_methods.empty?
-            target_class.include mixin
+            target_class.send(:include, mixin)
 
           when /^RewriteInstanceMethods/
             not_existing_methods = mixin_methods - target_instance_methods
             raise NameError.new("Tried to rewrite not existing instance methods: #{not_existing_methods.inspect}") unless not_existing_methods.empty?
-            target_class.prepend mixin
+            target_class.send(:prepend, mixin)
 
           else raise ArgumentError.new("Wrong mixin constant: #{constant}")
           end
