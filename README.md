@@ -80,6 +80,16 @@ RubyFeatures.define 'some_namespace/something_useful' do
       attr_accessor :useful_variable
     end
 
+    rewrite_instance_methods do
+      # rewrite instance methods
+      # call `super` to reach the rewritten method
+      def existing_instance_method
+        # some code before super
+        super
+        # some code after super
+      end
+    end
+
     instance_methods do
       # instance methods
       def useful_instance_method
@@ -91,12 +101,12 @@ RubyFeatures.define 'some_namespace/something_useful' do
       def useful_class_method
       end
     end
-
-    apply_to 'ActiveRecord::Relation' do
-      # feature can contain several apply_to definition
-    end
-
   end
+
+  apply_to 'ActiveRecord::Relation' do
+    # feature can contain several apply_to definition
+  end
+
 end
 ```
 
@@ -238,6 +248,9 @@ RubyFeatures.apply 'some_namespace/something_useful'
 ```
 
 ## Changes
+### v1.2.0
+* Added rewrite_instance_methods.
+
 ### v1.1.0
 * Added conditions.
 * Added dependencies.

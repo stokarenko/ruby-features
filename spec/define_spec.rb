@@ -31,6 +31,28 @@ describe RubyFeatures::Concern::Feature do
     )
   end
 
+  it 'should apply rewrite instance methods' do
+    test_class.class_eval do
+      def test_rewrite_instance_method
+        2
+      end
+    end
+
+    expect{
+      define_test_feature('rewrite_instance_methods_feature') do
+        rewrite_instance_methods do
+          def test_rewrite_instance_method
+            3 * super
+          end
+        end
+      end.apply
+    }.to change{test_class.new.test_rewrite_instance_method}.from(2).to(6)
+
+    expect(test_class.included_modules).to include(
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::RewriteInstanceMethodsFeature::DefineTestModule::DefineTestClass::RewriteInstance
+    )
+  end
+
   it 'should process applied block' do
     expect{
       define_test_feature('applied_block') do
