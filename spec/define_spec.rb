@@ -97,4 +97,14 @@ describe RubyFeatures::Concern::Feature do
     }.to raise_error(/Tried to include already existing methods: \[:existing_instance_method\]/)
   end
 
+  it 'should raise error if target has no feature rewrite instance method' do
+    expect{
+      define_test_feature('not_existing_rewrite_instance_method') do
+        rewrite_instance_methods do
+          def not_existing_instance_method; end
+        end
+      end.apply
+    }.to raise_error(/Tried to prepend not existing methods: \[:not_existing_instance_method\]/)
+  end
+
 end
