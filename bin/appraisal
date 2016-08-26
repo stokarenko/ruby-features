@@ -4,3 +4,4 @@ bundle
 BUNDLE_GEMFILE="gemfiles/clean.gemfile" bundle
 BUNDLE_GEMFILE="gemfiles/3.2.gemfile" bundle
 BUNDLE_GEMFILE="gemfiles/4.2.gemfile" bundle
+BUNDLE_GEMFILE="gemfiles/5.0.gemfile" bundle

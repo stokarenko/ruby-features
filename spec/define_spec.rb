@@ -31,6 +31,28 @@ describe RubyFeatures::Concern::Feature do
     )
   end
 
+  it 'should apply rewrite instance methods' do
+    test_class.class_eval do
+      def test_rewrite_instance_method
+        2
+      end
+    end
+
+    expect{
+      define_test_feature('rewrite_instance_methods_feature') do
+        rewrite_instance_methods do
+          def test_rewrite_instance_method
+            3 * super
+          end
+        end
+      end.apply
+    }.to change{test_class.new.test_rewrite_instance_method}.from(2).to(6)
+
+    expect(test_class.included_modules).to include(
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::RewriteInstanceMethodsFeature::DefineTestModule::DefineTestClass::RewriteInstance
+    )
+  end
+
   it 'should process applied block' do
     expect{
       define_test_feature('applied_block') do
@@ -73,6 +95,16 @@ describe RubyFeatures::Concern::Feature do
         end
       end.apply
     }.to raise_error(/Tried to include already existing methods: \[:existing_instance_method\]/)
+  end
+
+  it 'should raise error if target has no feature rewrite instance method' do
+    expect{
+      define_test_feature('not_existing_rewrite_instance_method') do
+        rewrite_instance_methods do
+          def not_existing_instance_method; end
+        end
+      end.apply
+    }.to raise_error(/Tried to prepend not existing methods: \[:not_existing_instance_method\]/)
   end
 
 end

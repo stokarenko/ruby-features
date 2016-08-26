@@ -33,18 +33,29 @@ module RubyFeatures
         _methods('Include', asserts, block)
       end
 
+      def rewrite_instance_methods(asserts = {}, &block)
+        _methods('RewriteInstance', asserts, block)
+      end
+
       def _apply_methods(target_class)
         constants.each do |constant|
-          mixin_method, existing_methods_method = case(constant)
-          when /^Extend/ then [:extend, :methods]
-          when /^Include/ then [:include, :instance_methods]
+          mixin_method, existing_methods_method, existing_methods_check = case(constant)
+          when /^Extend/ then [:extend, :methods, :exclusion]
+          when /^Include/ then [:include, :instance_methods, :exclusion]
+          when /^RewriteInstance/ then [:prepend, :instance_methods, :inclusion]
           else raise ArgumentError.new("Wrong mixin constant: #{constant}")
           end
 
           mixin = const_get(constant)
 
-          common_methods = target_class.public_send(existing_methods_method) & mixin.instance_methods
-          raise NameError.new("Tried to #{mixin_method} already existing methods: #{common_methods.inspect}") unless common_methods.empty?
+          case(existing_methods_check)
+          when :exclusion
+            existing_methods = mixin.instance_methods & target_class.public_send(existing_methods_method)
+            raise NameError.new("Tried to #{mixin_method} already existing methods: #{existing_methods.inspect}") unless existing_methods.empty?
+          when :inclusion
+            not_existing_methods = mixin.instance_methods - target_class.public_send(existing_methods_method)
+            raise NameError.new("Tried to #{mixin_method} not existing methods: #{not_existing_methods.inspect}") unless not_existing_methods.empty?
+          end
 
           target_class.send(mixin_method, mixin)
         end

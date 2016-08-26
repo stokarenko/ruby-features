@@ -1,0 +1,68 @@
+GIT
+  remote: git://github.com/rails/rails.git
+  revision: 4fa1027b27bfcb88aa68d6fe74821dc444519e06
+  branch: 5-0-stable
+  specs:
+    activerecord (5.0.0.1)
+      activemodel (= 5.0.0.1)
+      activesupport (= 5.0.0.1)
+      arel (~> 7.0)
+
+PATH
+  remote: ../
+  specs:
+    ruby-features (1.2.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    activemodel (5.0.0.1)
+      activesupport (= 5.0.0.1)
+    activesupport (5.0.0.1)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (~> 0.7)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    arel (7.1.1)
+    codeclimate-test-reporter (0.6.0)
+      simplecov (>= 0.7.1, < 1.0.0)
+    concurrent-ruby (1.0.2)
+    diff-lcs (1.2.5)
+    docile (1.1.5)
+    i18n (0.7.0)
+    json (2.0.2)
+    minitest (5.9.0)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.2)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
+    simplecov (0.12.0)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
+    thread_safe (0.3.5)
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activerecord!
+  bundler
+  codeclimate-test-reporter
+  rspec
+  ruby-features!
+
+BUNDLED WITH
+   1.12.5
