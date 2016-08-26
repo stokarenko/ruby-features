@@ -54,7 +54,7 @@ describe RubyFeatures do
     expect(subject).to_not respond_to(:boolean_false)
 
     expect(subject.singleton_class.included_modules).to include(
-      RubyFeatures::Mixins::ConditionsTestFeature::ConditionsTestClass::ExtendIfBooleanIsTrueAndStringIsString
+      RubyFeatures::Mixins::ConditionsTestFeature::ConditionsTestClass::AddClassMethodsIfBooleanIsTrueAndStringIsString
     )
   end
 

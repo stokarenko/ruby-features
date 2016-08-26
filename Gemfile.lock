@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-features (1.2.0)
+    ruby-features (1.2.1)
 
 GEM
   remote: http://rubygems.org/

@@ -13,7 +13,7 @@ describe RubyFeatures::Concern::Feature do
 
 
     expect(test_class.singleton_class.included_modules).to include(
-      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::ClassMethodsFeature::DefineTestModule::DefineTestClass::Extend
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::ClassMethodsFeature::DefineTestModule::DefineTestClass::AddClassMethods
     )
   end
 
@@ -27,7 +27,7 @@ describe RubyFeatures::Concern::Feature do
     }.to change{test_class.new.respond_to?(:test_instance_method)}.from(false).to(true)
 
     expect(test_class.included_modules).to include(
-      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::InstanceMethodsFeature::DefineTestModule::DefineTestClass::Include
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::InstanceMethodsFeature::DefineTestModule::DefineTestClass::AddInstanceMethods
     )
   end
 
@@ -49,7 +49,7 @@ describe RubyFeatures::Concern::Feature do
     }.to change{test_class.new.test_rewrite_instance_method}.from(2).to(6)
 
     expect(test_class.included_modules).to include(
-      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::RewriteInstanceMethodsFeature::DefineTestModule::DefineTestClass::RewriteInstance
+      RubyFeatures::Mixins::DefineTestModule::DefineTestClass::RewriteInstanceMethodsFeature::DefineTestModule::DefineTestClass::RewriteInstanceMethods
     )
   end
 
@@ -71,30 +71,40 @@ describe RubyFeatures::Concern::Feature do
 
   it 'should raise error if target already has feature class method' do
     test_class.class_eval do
-      def self.existing_class_method; end
+      class << self
+        def existing_class_method; end
+        private
+        def existing_private_class_method; end
+      end
     end
 
     expect{
       define_test_feature('existing_class_method') do
         class_methods do
           def existing_class_method; end
+          private
+          def existing_private_class_method; end
         end
       end.apply
-    }.to raise_error(/Tried to extend already existing methods: \[:existing_class_method\]/)
+    }.to raise_error(/Tried to add already existing class methods: \[:existing_class_method, :existing_private_class_method\]/)
   end
 
   it 'should raise error if target already has feature instance method' do
     test_class.class_eval do
       def existing_instance_method; end
+      private
+      def existing_private_instance_method; end
     end
 
     expect{
       define_test_feature('existing_instance_method') do
         instance_methods do
           def existing_instance_method; end
+          private
+          def existing_private_instance_method; end
         end
       end.apply
-    }.to raise_error(/Tried to include already existing methods: \[:existing_instance_method\]/)
+    }.to raise_error(/Tried to add already existing instance methods: \[:existing_instance_method, :existing_private_instance_method\]/)
   end
 
   it 'should raise error if target has no feature rewrite instance method' do
@@ -102,9 +112,11 @@ describe RubyFeatures::Concern::Feature do
       define_test_feature('not_existing_rewrite_instance_method') do
         rewrite_instance_methods do
           def not_existing_instance_method; end
+          private
+          def not_existing_private_instance_method; end
         end
       end.apply
-    }.to raise_error(/Tried to prepend not existing methods: \[:not_existing_instance_method\]/)
+    }.to raise_error(/Tried to rewrite not existing instance methods: \[:not_existing_instance_method, :not_existing_private_instance_method\]/)
   end
 
 end
